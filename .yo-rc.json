@@ -1,0 +1,33 @@
+{
+  "@pnp/generator-spfx": {
+    "framework": "react",
+    "pnpFramework": "reactjs.plus",
+    "pnp-libraries": [
+      "@pnp/pnpjs",
+      "ouifr@6",
+      "rush@3.5"
+    ],
+    "pnp-ci": [
+      "azure"
+    ],
+    "pnp-vetting": [
+      "webpack-analyzer"
+    ],
+    "spfxenv": "spo",
+    "pnp-testing": [
+      "jest"
+    ]
+  },
+  "@microsoft/generator-sharepoint": {
+    "environment": "spo",
+    "framework": "react",
+    "isCreatingSolution": false,
+    "whichFolder": "subdir",
+    "version": "1.9.1",
+    "libraryName": "personalize-webpart",
+    "libraryId": "e6d5fbaa-1624-497d-8628-40d16f2e77d6",
+    "packageManager": "npm",
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

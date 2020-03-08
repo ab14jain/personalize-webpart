@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "first-webpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/firstWebpart/FirstWebpartWebPart.js",
+          "manifest": "./src/webparts/firstWebpart/FirstWebpartWebPart.manifest.json"
+        }
+      ]
+    },
+    "second-webpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/secondWebpart/SecondWebpartWebPart.js",
+          "manifest": "./src/webparts/secondWebpart/SecondWebpartWebPart.manifest.json"
+        }
+      ]
+    },
+    "third-webpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/thirdWebpart/ThirdWebpartWebPart.js",
+          "manifest": "./src/webparts/thirdWebpart/ThirdWebpartWebPart.manifest.json"
+        }
+      ]
+    },
+    "fourth-webpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/fourthWebpart/FourthWebpartWebPart.js",
+          "manifest": "./src/webparts/fourthWebpart/FourthWebpartWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "FirstWebpartWebPartStrings": "lib/webparts/firstWebpart/loc/{locale}.js",
+    "SecondWebpartWebPartStrings": "lib/webparts/secondWebpart/loc/{locale}.js",
+    "ThirdWebpartWebPartStrings": "lib/webparts/thirdWebpart/loc/{locale}.js",
+    "FourthWebpartWebPartStrings": "lib/webparts/fourthWebpart/loc/{locale}.js"
+  }
+}
