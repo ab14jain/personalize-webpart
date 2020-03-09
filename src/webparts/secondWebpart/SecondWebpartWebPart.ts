@@ -1,27 +1,28 @@
-import * as React from 'react';
-import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import { Version } from "@microsoft/sp-core-library";
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-webpart-base';
+} from "@microsoft/sp-webpart-base";
 
-import * as strings from 'SecondWebpartWebPartStrings';
-import SecondWebpart from './components/SecondWebpart';
-import { ISecondWebpartProps } from './components/ISecondWebpartProps';
+import * as strings from "SecondWebpartWebPartStrings";
+import SecondWebpart from "./components/SecondWebpart";
+import { ISecondWebpartProps } from "./components/ISecondWebpartProps";
 
 export interface ISecondWebpartWebPartProps {
   description: string;
 }
 
-export default class SecondWebpartWebPart extends BaseClientSideWebPart<ISecondWebpartWebPartProps> {
-
+export default class SecondWebpartWebPart extends BaseClientSideWebPart<
+  ISecondWebpartWebPartProps
+> {
   public render(): void {
-    const element: React.ReactElement<ISecondWebpartProps > = React.createElement(
+    const element: React.ReactElement<ISecondWebpartProps> = React.createElement(
       SecondWebpart,
       {
-        description: this.properties.description,
+        description: this.properties.description
         // context: this.context.pageContext
       }
     );
@@ -34,7 +35,7 @@ export default class SecondWebpartWebPart extends BaseClientSideWebPart<ISecondW
   }
 
   protected get dataVersion(): Version {
-    return Version.parse('1.0');
+    return Version.parse("1.0");
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -48,7 +49,7 @@ export default class SecondWebpartWebPart extends BaseClientSideWebPart<ISecondW
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
+                PropertyPaneTextField("description", {
                   label: strings.DescriptionFieldLabel
                 })
               ]

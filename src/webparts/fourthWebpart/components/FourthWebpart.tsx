@@ -1,35 +1,55 @@
-import * as React from 'react';
-import styles from './FourthWebpart.module.scss';
-import { IFourthWebpartProps } from './IFourthWebpartProps';
-import { escape } from '@microsoft/sp-lodash-subset';
-import { ClientsidePageFromFile } from '@pnp/sp/clientside-pages';
-import { sp } from '@pnp/sp';
+import * as React from "react";
+import styles from "./FourthWebpart.module.scss";
+import { IFourthWebpartProps } from "./IFourthWebpartProps";
+import { escape } from "@microsoft/sp-lodash-subset";
+import { ClientsidePageFromFile } from "@pnp/sp/clientside-pages";
+import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
+import { Icon } from "office-ui-fabric-react/lib/Icon";
 
-export interface IFourthWebpartState{
+export interface IFourthWebpartState {
   selectedWebpart: string;
 }
 
-export default class FourthWebpart extends React.Component<IFourthWebpartProps, IFourthWebpartState> {
-
-  constructor(props){
+export default class FourthWebpart extends React.Component<
+  IFourthWebpartProps,
+  IFourthWebpartState
+> {
+  constructor(props) {
     super(props);
     this.state = {
       selectedWebpart: "Fourth Webpart"
-    }
+    };
   }
   public render(): React.ReactElement<IFourthWebpartProps> {
     return (
-      <div className={ styles.fourthWebpart }>
-        <div className={ styles.container }>
-          <div className={ styles.row }>
-            <div className={ styles.column }>
-              <span className={ styles.title }>Welcome to SharePoint!</span>
-              <p className={ styles.subTitle }>Customize SharePoint experiences using Web Parts.</p>
-              <p className={ styles.description }>{escape(this.props.description)}</p>
-              <a className={ styles.button } onClick={this._removeSelectedWebpart.bind(this)}>
-                <span className={ styles.label }>Remove</span>
+      <div className={styles.fourthWebpart}>
+        <div className={styles.container}>
+          <div className={styles.row}>
+            <div className={styles.webpartOption} style={{ height: "5px" }}>
+              <Icon
+                iconName="Delete"
+                className={styles.deleteWebpart}
+                style={{ fontSize: "16px", float: "right", cursor: "pointer" }}
+                onClick={this._removeSelectedWebpart.bind(this)}
+              ></Icon>
+            </div>
+          </div>
+          <div className={styles.row}>
+            <div className={styles.column}>
+              <span className={styles.title}>Welcome to SharePoint!</span>
+              <p className={styles.subTitle}>
+                Customize SharePoint experiences using Web Parts.
+              </p>
+              <p className={styles.description}>
+                {escape(this.props.description)}
+              </p>
+              <a
+                className={styles.button}
+                onClick={this._removeSelectedWebpart.bind(this)}
+              >
+                <span className={styles.label}>Remove</span>
               </a>
             </div>
           </div>
@@ -38,14 +58,14 @@ export default class FourthWebpart extends React.Component<IFourthWebpartProps, 
     );
   }
 
-  private async _removeSelectedWebpart(){
+  private async _removeSelectedWebpart() {
     this._removeWebpart().then(res => {
       window.location.reload(false);
       console.log(res);
     });
   }
 
-  private async _removeWebpart(){
+  private async _removeWebpart() {
     //const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath("/sites/MigrationData/SitePages/Index.aspx"));
 
     //let pageURL = "/sites/MigrationData/SitePages/Index.aspx";
@@ -58,7 +78,7 @@ export default class FourthWebpart extends React.Component<IFourthWebpartProps, 
       section.columns.forEach(column => {
         column.controls.forEach(control => {
           let wpTitle = control.data.webPartData.title;
-          if(this.state.selectedWebpart == wpTitle){
+          if (this.state.selectedWebpart == wpTitle) {
             control.remove();
           }
         });
