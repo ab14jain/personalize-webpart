@@ -173,19 +173,20 @@ export default class FirstWebpart extends React.Component<
     );
 
     let numberOfRows = page.sections.length;
-    let numberOfColumnsInRow = [];
+    let numberOfControlsInRow = [];
     page.sections.forEach(section => {
       section.columns.forEach(column => {
-        numberOfColumnsInRow.push(column.controls.length);
+        numberOfControlsInRow.push(column.controls.length);
       });
     });
 
     console.log(page.sections);
     console.log(numberOfRows);
-    console.log(numberOfColumnsInRow);
+    console.log(numberOfControlsInRow);
 
+    let part;
     this.state.selectedWebpart.forEach(element => {
-      // find the definition we want, here by id
+      //find the definition we want, here by id
       //const partDef = partDefs.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa");
       //const partDef = partDefs.filter(c => c.Id === "{977DA086-AE96-495F-8D8A-CFC33FBCED59}");
       //const partDef = partDefs.filter(c => c.Name === "DMS");
@@ -199,7 +200,7 @@ export default class FirstWebpart extends React.Component<
       }
 
       // create a ClientWebPart instance from the definition
-      const part = ClientsideWebpart.fromComponentDef(partDef[0]);
+      part = ClientsideWebpart.fromComponentDef(partDef[0]);
 
       // set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a youtube video.
       // the structure of the properties varies for each webpart and each version of a webpart, so you will need to ensure you are setting
@@ -209,8 +210,30 @@ export default class FirstWebpart extends React.Component<
       // });
 
       // we add that part to a new section
+
       //page.addSection().addControl(part);
     });
+
+    for(let i=0; i < numberOfControlsInRow.length; i++){
+      if(numberOfControlsInRow[i] == 0){
+        if(i == 0){
+          page.sections[0].columns[0].addControl(part);
+          break;
+        }
+        else if(i == 1){
+          page.sections[0].columns[1].addControl(part);
+          break;
+        }
+        else if(i == 2){
+          page.sections[1].columns[0].addControl(part);
+          break;
+        }
+        else if(i == 3){
+          page.sections[1].columns[1].addControl(part);
+          break;
+        }
+      }
+    }
 
     await page.save();
   }
