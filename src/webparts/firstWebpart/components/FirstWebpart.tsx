@@ -28,10 +28,10 @@ export default class FirstWebpart extends React.Component<
 
   public render(): React.ReactElement<IFirstWebpartProps> {
     const availableWebpart = [
-      {
-        name: "First Webpart",
-        id: "{A43197B7-179B-4CF9-B027-0AB70D1795C7}"
-      },
+      // {
+      //   name: "First Webpart",
+      //   id: "{A43197B7-179B-4CF9-B027-0AB70D1795C7}"
+      // },
       {
         name: "Second Webpart",
         id: "{2881C2C7-F1BC-4C9E-89CA-FD3C47A4FEFF}"
@@ -172,6 +172,18 @@ export default class FirstWebpart extends React.Component<
       )
     );
 
+    let numberOfRows = page.sections.length;
+    let numberOfColumnsInRow = [];
+    page.sections.forEach(section => {
+      section.columns.forEach(column => {
+        numberOfColumnsInRow.push(column.controls.length);
+      });
+    });
+
+    console.log(page.sections);
+    console.log(numberOfRows);
+    console.log(numberOfColumnsInRow);
+
     this.state.selectedWebpart.forEach(element => {
       // find the definition we want, here by id
       //const partDef = partDefs.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa");
@@ -197,7 +209,7 @@ export default class FirstWebpart extends React.Component<
       // });
 
       // we add that part to a new section
-      page.addSection().addControl(part);
+      //page.addSection().addControl(part);
     });
 
     await page.save();
