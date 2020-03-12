@@ -7,6 +7,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
+import Report from "./Report/Report";
 
 export interface IThirdWebpartState {
   selectedWebpart: string;
@@ -23,11 +24,25 @@ export default class ThirdWebpart extends React.Component<
     };
   }
 
+  handleIconClick(slectedWebpart: string) {
+    console.log("handleIconClick in Third Webpart");
+    console.log(slectedWebpart);
+    // let allTiles = this.state.showTiles;
+    // let index = allTiles.indexOf(slectedWebpart);
+    // //delete allTiles[index];
+    // allTiles.splice(index, 1);
+    // this.setState({
+    //   showTiles: allTiles
+    // });
+    this._removeSelectedWebpart();
+  }
+
   public render(): React.ReactElement<IThirdWebpartProps> {
     return (
       <div className={styles.thirdWebpart}>
         <div className={styles.container}>
-          <div className={styles.row}>
+          <Report removeTile={this.handleIconClick.bind(this)}></Report>
+          {/* <div className={styles.row}>
             <div className={styles.webpartOption} style={{ height: "5px" }}>
               <Icon
                 iconName="Delete"
@@ -53,7 +68,7 @@ export default class ThirdWebpart extends React.Component<
                 <span className={styles.label}>Remove</span>
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     );

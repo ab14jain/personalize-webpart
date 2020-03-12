@@ -1,27 +1,29 @@
-import * as React from 'react';
-import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import { Version } from "@microsoft/sp-core-library";
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-webpart-base';
+} from "@microsoft/sp-webpart-base";
 
-import * as strings from 'FirstWebpartWebPartStrings';
-import FirstWebpart from './components/FirstWebpart';
-import { IFirstWebpartProps } from './components/IFirstWebpartProps';
+import * as strings from "FirstWebpartWebPartStrings";
+import FirstWebpart from "./components/FirstWebpart";
+import { IFirstWebpartProps } from "./components/IFirstWebpartProps";
 
 export interface IFirstWebpartWebPartProps {
   description: string;
 }
 
-export default class FirstWebpartWebPart extends BaseClientSideWebPart<IFirstWebpartWebPartProps> {
-
+export default class FirstWebpartWebPart extends BaseClientSideWebPart<
+  IFirstWebpartWebPartProps
+> {
   public render(): void {
-    const element: React.ReactElement<IFirstWebpartProps > = React.createElement(
+    const element: React.ReactElement<IFirstWebpartProps> = React.createElement(
       FirstWebpart,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        context: this.context
       }
     );
 
@@ -33,7 +35,7 @@ export default class FirstWebpartWebPart extends BaseClientSideWebPart<IFirstWeb
   }
 
   protected get dataVersion(): Version {
-    return Version.parse('1.0');
+    return Version.parse("1.0");
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -47,7 +49,7 @@ export default class FirstWebpartWebPart extends BaseClientSideWebPart<IFirstWeb
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
+                PropertyPaneTextField("description", {
                   label: strings.DescriptionFieldLabel
                 })
               ]

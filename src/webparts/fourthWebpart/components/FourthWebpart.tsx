@@ -7,7 +7,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
-
+import Task from "./Task/Task";
 export interface IFourthWebpartState {
   selectedWebpart: string;
 }
@@ -22,11 +22,26 @@ export default class FourthWebpart extends React.Component<
       selectedWebpart: "Fourth Webpart"
     };
   }
+
+  handleIconClick(slectedWebpart: string) {
+    console.log("handleIconClick in Fourth Webpart");
+    console.log(slectedWebpart);
+    // let allTiles = this.state.showTiles;
+    // let index = allTiles.indexOf(slectedWebpart);
+    // //delete allTiles[index];
+    // allTiles.splice(index, 1);
+    // this.setState({
+    //   showTiles: allTiles
+    // });
+    this._removeSelectedWebpart();
+  }
+
   public render(): React.ReactElement<IFourthWebpartProps> {
     return (
       <div className={styles.fourthWebpart}>
         <div className={styles.container}>
-          <div className={styles.row}>
+          <Task removeTile={this.handleIconClick.bind(this)}></Task>
+          {/* <div className={styles.row}>
             <div className={styles.webpartOption} style={{ height: "5px" }}>
               <Icon
                 iconName="Delete"
@@ -52,7 +67,7 @@ export default class FourthWebpart extends React.Component<
                 <span className={styles.label}>Remove</span>
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     );

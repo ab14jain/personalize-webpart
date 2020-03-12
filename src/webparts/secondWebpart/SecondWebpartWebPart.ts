@@ -22,8 +22,8 @@ export default class SecondWebpartWebPart extends BaseClientSideWebPart<
     const element: React.ReactElement<ISecondWebpartProps> = React.createElement(
       SecondWebpart,
       {
-        description: this.properties.description
-        // context: this.context.pageContext
+        description: this.properties.description,
+        context: this.context
       }
     );
 

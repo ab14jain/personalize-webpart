@@ -5,6 +5,9 @@ import { escape } from "@microsoft/sp-lodash-subset";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
+
 import {
   ClientsideWebpart,
   ClientsidePageFromFile,
@@ -26,7 +29,33 @@ export default class FirstWebpart extends React.Component<
     };
   }
 
+  private _getCurrentUserWebpartDetail() {
+    console.log("===============================================");
+    sp.web.lists
+      .getByTitle("EmployeeWebpartDetail")
+      .items.select("*", "DashboardUser/EMail")
+      .expand("DashboardUser")
+      .filter(
+        `DashboardUser/EMail eq '${this.props.context.pageContext.user.email}'`
+      )
+      .getAll()
+      .then(res => {
+        console.log("===============================================");
+        console.log(res);
+        this.setState({
+          selectedWebpart: res[0].OOTBWebpartName
+        });
+        console.log("===============================================");
+      });
+  }
+  componentDidMount() {
+    this._getCurrentUserWebpartDetail();
+  }
+
   public render(): React.ReactElement<IFirstWebpartProps> {
+    console.log("======================First============================");
+    this._displayWebpart();
+    console.log("======================Last============================");
     const availableWebpart = [
       // {
       //   name: "First Webpart",
@@ -71,9 +100,9 @@ export default class FirstWebpart extends React.Component<
             <div className={styles.column}>
               <span className={styles.title}>All webparts </span>
               <select>{ddWebpart}</select>
+              {/* <br />
               <br />
-              <br />
-              {chkboxWebpart}
+              {chkboxWebpart} */}
               <p className={styles.description}>
                 {escape(this.props.description)}
               </p>
@@ -103,6 +132,7 @@ export default class FirstWebpart extends React.Component<
       previousSelection.push(e.target.name);
     } else {
       var index = previousSelection.indexOf(e.target.name);
+
       delete previousSelection[index];
     }
 
@@ -112,12 +142,62 @@ export default class FirstWebpart extends React.Component<
     //alert("_onChange===" + e.target.checked);
   }
 
+  private async _displayWebpart() {
+    // this will be a ClientSidePageComponent array
+    // this can be cached on the client in production scenarios
+    //alert(sp.web.allProperties);
+    const partDefs = await sp.web.getClientsideWebParts();
+    const page = await ClientsidePageFromFile(
+      sp.web.getFileByServerRelativePath(
+        "/sites/MigrationData/SitePages/Home.aspx"
+      )
+    );
+
+    page.sections[0].columns.length = 0;
+    page.sections[1].columns.length = 0;
+
+    // create a new column layout
+    page.sections[0].addColumn(6);
+    page.sections[0].addColumn(6);
+    page.sections[1].addColumn(6);
+    page.sections[1].addColumn(6);
+
+    // publish our changes
+    await page.save();
+
+    let part;
+    this.state.selectedWebpart.forEach(element => {
+      const partDef = partDefs.filter(c => c.Name === element);
+
+      // optionally ensure you found the def
+      if (partDef.length < 1) {
+        // we didn't find it so we throw an error
+        throw new Error("Could not find the web part");
+      }
+
+      // create a ClientWebPart instance from the definition
+      part = ClientsideWebpart.fromComponentDef(partDef[0]);
+
+      if (element == "First Webpart") {
+        page.sections[0].columns[0].addControl(part);
+      } else if (element == "Second Webpart") {
+        page.sections[0].columns[1].addControl(part);
+      } else if (element == "Third Webpart") {
+        page.sections[1].columns[0].addControl(part);
+      } else if (element == "Fourth Webpart") {
+        page.sections[1].columns[1].addControl(part);
+      }
+    });
+
+    await page.save();
+  }
+
   private _AddWebpart() {
     this._getClientSideWebpart().then(res => {
-      //window.location.reload(false);
+      window.location.reload(false);
       console.log(res);
     });
-    alert("Add");
+    //alert("Add");
   }
 
   private async _removeSelectedWebpart() {
@@ -160,7 +240,7 @@ export default class FirstWebpart extends React.Component<
   private async _getClientSideWebpart() {
     // this will be a ClientSidePageComponent array
     // this can be cached on the client in production scenarios
-    alert(sp.web.allProperties);
+    //alert(sp.web.allProperties);
     console.log(sp.web.allProperties);
     const partDefs = await sp.web.getClientsideWebParts();
     console.log("==============Available webparts Start==============");
@@ -212,28 +292,25 @@ export default class FirstWebpart extends React.Component<
       // we add that part to a new section
 
       //page.addSection().addControl(part);
-    });
 
-    for(let i=0; i < numberOfControlsInRow.length; i++){
-      if(numberOfControlsInRow[i] == 0){
-        if(i == 0){
-          page.sections[0].columns[0].addControl(part);
-          break;
-        }
-        else if(i == 1){
-          page.sections[0].columns[1].addControl(part);
-          break;
-        }
-        else if(i == 2){
-          page.sections[1].columns[0].addControl(part);
-          break;
-        }
-        else if(i == 3){
-          page.sections[1].columns[1].addControl(part);
-          break;
+      for (let i = 0; i < numberOfControlsInRow.length; i++) {
+        if (numberOfControlsInRow[i] == 0) {
+          if (i == 0) {
+            page.sections[0].columns[0].addControl(part);
+            break;
+          } else if (i == 1) {
+            page.sections[0].columns[1].addControl(part);
+            break;
+          } else if (i == 2) {
+            page.sections[1].columns[0].addControl(part);
+            break;
+          } else if (i == 3) {
+            page.sections[1].columns[1].addControl(part);
+            break;
+          }
         }
       }
-    }
+    });
 
     await page.save();
   }

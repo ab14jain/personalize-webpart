@@ -7,9 +7,14 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
+import Chart from "./Chart/Chart";
 
 export interface ISecondWebpartState {
   selectedWebpart: string;
+  showTiles: string[];
+  webparts: string[];
+  allSubscribedWebpart: string[];
+  webpartSelection: string;
 }
 
 export default class SecondWebpart extends React.Component<
@@ -18,16 +23,40 @@ export default class SecondWebpart extends React.Component<
 > {
   constructor(props) {
     super(props);
+    let webparts = []; //["Task", "News", "Chart", "Notification", "Report"];
+    //this.props.webparts = webparts;
     this.state = {
-      selectedWebpart: "Second Webpart"
+      selectedWebpart: "Second Webpart",
+      allSubscribedWebpart: [],
+      webparts: [],
+      showTiles: webparts,
+      webpartSelection: ""
     };
+  }
+
+  handleIconClick(slectedWebpart: string) {
+    console.log("handleIconClick in Third Webpart");
+    console.log(slectedWebpart);
+    // let allTiles = this.state.showTiles;
+    // let index = allTiles.indexOf(slectedWebpart);
+    // //delete allTiles[index];
+    // allTiles.splice(index, 1);
+    // this.setState({
+    //   showTiles: allTiles
+    // });
+    this._removeSelectedWebpart();
+  }
+
+  componentDidMount() {
+    this._getSelectedWebpart();
   }
 
   public render(): React.ReactElement<ISecondWebpartProps> {
     return (
       <div className={styles.secondWebpart}>
         <div className={styles.container}>
-          <div className={styles.row}>
+          <Chart removeTile={this.handleIconClick.bind(this)}></Chart>
+          {/* <div className={styles.row}>
             <div className={styles.webpartOption} style={{ height: "5px" }}>
               <Icon
                 iconName="Delete"
@@ -53,7 +82,7 @@ export default class SecondWebpart extends React.Component<
                 <span className={styles.label}>Remove</span>
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     );
@@ -64,6 +93,25 @@ export default class SecondWebpart extends React.Component<
       console.log(res);
       window.location.reload(false);
     });
+  }
+
+  private _getSelectedWebpart() {
+    sp.web.lists
+      .getByTitle("EmployeeWebpartDetail")
+      .items.select("*", "DashboardUser/EMail")
+      .expand("DashboardUser")
+      .filter(
+        `DashboardUser/EMail eq '${this.props.context.pageContext.user.email}'`
+      )
+      .getAll()
+      .then(res => {
+        console.log("===============================================");
+        console.log(res);
+        this.setState({
+          allSubscribedWebpart: res[0].OOTBWebpartName
+        });
+        console.log("===============================================");
+      });
   }
 
   private async _removeWebpart() {
@@ -87,6 +135,37 @@ export default class SecondWebpart extends React.Component<
         });
       });
     });
+
+    let updatedWebpartDetail = this.state.allSubscribedWebpart;
+
+    let index = this.state.allSubscribedWebpart.indexOf(
+      this.state.selectedWebpart
+    );
+    updatedWebpartDetail = updatedWebpartDetail.splice(index, 1);
+
+    sp.web.lists
+      .getByTitle("EmployeeWebpartDetail")
+      .items.select("*", "DashboardUser/EMail")
+      .expand("DashboardUser")
+      .filter(
+        `DashboardUser/EMail eq '${this.props.context.pageContext.user.email}'`
+      )
+      .getAll()
+      .then(items => {
+        if (items.length > 0) {
+          sp.web.lists
+            .getByTitle("EmployeeWebpartDetail")
+            .items.getById(items[0].Id)
+            .update({
+              OOTBWebpartName: { results: updatedWebpartDetail }
+            })
+            .then(result => {
+              // here you will have updated the item
+              console.log(JSON.stringify(result));
+              alert("Dashboard Saved!");
+            });
+        }
+      });
     console.log("Removed");
     await page.save();
     alert("Remove");
