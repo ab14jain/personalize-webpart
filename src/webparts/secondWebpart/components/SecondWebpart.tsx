@@ -6,8 +6,12 @@ import { ClientsidePageFromFile } from "@pnp/sp/clientside-pages";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import Chart from "./Chart/Chart";
+import "./../../../common/css/style.css";
+import "./../../../common/css/default.css";
 
 export interface ISecondWebpartState {
   selectedWebpart: string;

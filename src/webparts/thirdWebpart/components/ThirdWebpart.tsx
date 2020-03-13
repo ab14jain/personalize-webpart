@@ -8,6 +8,8 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import Report from "./Report/Report";
+import "./../../../common/css/style.css";
+import "./../../../common/css/default.css";
 
 export interface IThirdWebpartState {
   selectedWebpart: string;

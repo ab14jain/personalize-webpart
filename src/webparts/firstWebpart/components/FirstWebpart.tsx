@@ -8,6 +8,9 @@ import "@pnp/sp/clientside-pages/web";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 
+import "./../../../common/css/style.css";
+import "./../../../common/css/default.css";
+
 import {
   ClientsideWebpart,
   ClientsidePageFromFile,

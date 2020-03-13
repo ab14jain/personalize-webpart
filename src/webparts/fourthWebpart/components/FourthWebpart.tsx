@@ -8,6 +8,10 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import Task from "./Task/Task";
+
+import "./../../../common/css/style.css";
+import "./../../../common/css/default.css";
+
 export interface IFourthWebpartState {
   selectedWebpart: string;
 }
