@@ -21,7 +21,8 @@ export default class ThirdWebpartWebPart extends BaseClientSideWebPart<IThirdWeb
     const element: React.ReactElement<IThirdWebpartProps > = React.createElement(
       ThirdWebpart,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        context:this.context
       }
     );
 

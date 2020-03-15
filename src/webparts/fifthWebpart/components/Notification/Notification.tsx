@@ -28,7 +28,7 @@ class Notification extends React.Component<INotificationProps, {}> {
             {/* <Icon iconName="Edit" style={{fontSize:"16px"}}></Icon> */}
             <Icon
               iconName="Delete"
-              style={{ fontSize: "16px" }}
+              style={{ fontSize: "16px", display:"none" }}
               onClick={() => this.props.removeTile("Notification")}
             ></Icon>
           </div>

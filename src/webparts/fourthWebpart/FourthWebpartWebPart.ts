@@ -21,7 +21,8 @@ export default class FourthWebpartWebPart extends BaseClientSideWebPart<IFourthW
     const element: React.ReactElement<IFourthWebpartProps > = React.createElement(
       FourthWebpart,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        context: this.context
       }
     );
 

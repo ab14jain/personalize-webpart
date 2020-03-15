@@ -28,7 +28,7 @@ class Chart extends React.Component<IChartProps, {}> {
             {/* <Icon iconName="Edit" style={{fontSize:"16px", marginRight:"2px"}}></Icon> */}
             <Icon
               iconName="Delete"
-              style={{ fontSize: "16px" }}
+              style={{ fontSize: "16px", display: "none" }}
               onClick={() => this.props.removeTile("Chart")}
             ></Icon>
           </div>
@@ -37,7 +37,7 @@ class Chart extends React.Component<IChartProps, {}> {
           <BarChart
             colorBars
             height={250}
-            width={250}
+            width={550}
             data={[
               {
                 x: "A",
@@ -62,6 +62,26 @@ class Chart extends React.Component<IChartProps, {}> {
               {
                 x: "F",
                 y: 34
+              },
+              {
+                x: "G",
+                y: 47
+              },
+              {
+                x: "H",
+                y: 53
+              },
+              {
+                x: "I",
+                y: 19
+              },
+              {
+                x: "J",
+                y: 9
+              },
+              {
+                x: "K",
+                y: 27
               }
             ]}
             margin={{ top: 0, right: 0, bottom: 30, left: 100 }}

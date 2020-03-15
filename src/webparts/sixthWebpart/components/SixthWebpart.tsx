@@ -1,20 +1,16 @@
-import * as React from "react";
-import styles from "./FourthWebpart.module.scss";
-import { IFourthWebpartProps } from "./IFourthWebpartProps";
-import { escape } from "@microsoft/sp-lodash-subset";
+import * as React from 'react';
+import styles from './SixthWebpart.module.scss';
+import { ISixthWebpartProps } from './ISixthWebpartProps';
+import { escape } from '@microsoft/sp-lodash-subset';
 import { ClientsidePageFromFile } from "@pnp/sp/clientside-pages";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items/list";
 import "@pnp/sp/clientside-pages/web";
-import { Icon } from "office-ui-fabric-react/lib/Icon";
-import Task from "./Task/Task";
+import News from './News/News';
 
-import "./../../../common/css/style.css";
-import "./../../../common/css/default.css";
-
-export interface IFourthWebpartState {
+export interface ISixthWebpartState {
   selectedWebpart: string;
   showTiles: string[];
   webparts: string[];
@@ -22,16 +18,12 @@ export interface IFourthWebpartState {
   webpartSelection: string;
 }
 
-export default class FourthWebpart extends React.Component<
-  IFourthWebpartProps,
-  IFourthWebpartState
-> {
+export default class SixthWebpart extends React.Component<ISixthWebpartProps, ISixthWebpartState> {
   constructor(props) {
     super(props);
     let webparts = []; //["Task", "News", "Chart", "Notification", "Report"];
-    //this.props.webparts = webparts;
     this.state = {
-      selectedWebpart: "Fourth Webpart",
+      selectedWebpart: "Sixth Webpart",
       allSubscribedWebpart: [],
       webparts: [],
       showTiles: webparts,
@@ -40,7 +32,7 @@ export default class FourthWebpart extends React.Component<
   }
 
   handleIconClick(slectedWebpart: string) {
-    console.log("handleIconClick in Fourth Webpart");
+    console.log("handleIconClick in sixth Webpart");
     console.log(slectedWebpart);
     // let allTiles = this.state.showTiles;
     // let index = allTiles.indexOf(slectedWebpart);
@@ -56,48 +48,14 @@ export default class FourthWebpart extends React.Component<
     this._getSelectedWebpart();
   }
 
-  public render(): React.ReactElement<IFourthWebpartProps> {
+  public render(): React.ReactElement<ISixthWebpartProps> {
     return (
-      <div className={styles.fourthWebpart}>
-        <div className={styles.container}>
-          <Task removeTile={this.handleIconClick.bind(this)}></Task>
-          {/* <div className={styles.row}>
-            <div className={styles.webpartOption} style={{ height: "5px" }}>
-              <Icon
-                iconName="Delete"
-                className={styles.deleteWebpart}
-                style={{ fontSize: "16px", float: "right", cursor: "pointer" }}
-                onClick={this._removeSelectedWebpart.bind(this)}
-              ></Icon>
-            </div>
-          </div>
-          <div className={styles.row}>
-            <div className={styles.column}>
-              <span className={styles.title}>Welcome to SharePoint!</span>
-              <p className={styles.subTitle}>
-                Customize SharePoint experiences using Web Parts.
-              </p>
-              <p className={styles.description}>
-                {escape(this.props.description)}
-              </p>
-              <a
-                className={styles.button}
-                onClick={this._removeSelectedWebpart.bind(this)}
-              >
-                <span className={styles.label}>Remove</span>
-              </a>
-            </div>
-          </div> */}
+      <div className={ styles.sixthWebpart }>
+        <div className={ styles.container }>
+          <News removeTile={this.handleIconClick.bind(this)}></News>
         </div>
       </div>
     );
-  }
-
-  private async _removeSelectedWebpart() {
-    this._removeWebpart().then(res => {
-      window.location.reload(false);
-      console.log(res);
-    });
   }
 
   private _getSelectedWebpart() {
@@ -113,12 +71,19 @@ export default class FourthWebpart extends React.Component<
         console.log("===============================================");
         console.log(res);
         this.setState({
-          allSubscribedWebpart: res[0].OOTBWebpartName,
-          //selectedWebpart:res[0].OOTBWebpartName
+          allSubscribedWebpart: res[0].OOTBWebpartName
         });
         console.log("===============================================");
       });
   }
+
+  private async _removeSelectedWebpart() {
+    this._removeWebpart().then(res => {
+      window.location.reload(false);
+      console.log(res);
+    });
+  }
+
   private async _removeWebpart() {
     //const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath("/sites/MigrationData/SitePages/Index.aspx"));
 
@@ -146,6 +111,7 @@ export default class FourthWebpart extends React.Component<
     let index = this.state.allSubscribedWebpart.indexOf(
       this.state.selectedWebpart
     );
+
     if(updatedWebpartDetail.length == 1 && index == 0){
       updatedWebpartDetail = []
     }
@@ -178,6 +144,6 @@ export default class FourthWebpart extends React.Component<
       });
     console.log("Removed");
     await page.save();
-    alert("Removed");
+    alert("Remove");
   }
 }

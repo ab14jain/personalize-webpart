@@ -2,27 +2,27 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
+  BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+} from '@microsoft/sp-webpart-base';
 
-import * as strings from 'FifthWebpartWebPartStrings';
-import FifthWebpart from './components/FifthWebpart';
-import { IFifthWebpartProps } from './components/IFifthWebpartProps';
+import * as strings from 'SixthWebpartWebPartStrings';
+import SixthWebpart from './components/SixthWebpart';
+import { ISixthWebpartProps } from './components/ISixthWebpartProps';
 
-export interface IFifthWebpartWebPartProps {
+export interface ISixthWebpartWebPartProps {
   description: string;
 }
 
-export default class FifthWebpartWebPart extends BaseClientSideWebPart <IFifthWebpartWebPartProps> {
+export default class SixthWebpartWebPart extends BaseClientSideWebPart<ISixthWebpartWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IFifthWebpartProps> = React.createElement(
-      FifthWebpart,
+    const element: React.ReactElement<ISixthWebpartProps > = React.createElement(
+      SixthWebpart,
       {
         description: this.properties.description,
-        context:this.context
+        context: this.context
       }
     );
 

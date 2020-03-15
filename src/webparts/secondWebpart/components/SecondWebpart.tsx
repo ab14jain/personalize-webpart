@@ -145,7 +145,13 @@ export default class SecondWebpart extends React.Component<
     let index = this.state.allSubscribedWebpart.indexOf(
       this.state.selectedWebpart
     );
-    updatedWebpartDetail = updatedWebpartDetail.splice(index, 1);
+
+    if(updatedWebpartDetail.length == 1 && index == 0){
+      updatedWebpartDetail = []
+    }
+    else{
+      updatedWebpartDetail.splice(index, 1);
+    }
 
     sp.web.lists
       .getByTitle("EmployeeWebpartDetail")
