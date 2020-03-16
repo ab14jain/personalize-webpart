@@ -6,25 +6,30 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
-import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
-import { IButtonProps} from 'office-ui-fabric-react/lib/Button';
-const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
+import {
+  CommandBar,
+  ICommandBarItemProps
+} from "office-ui-fabric-react/lib/CommandBar";
+import { IButtonProps } from "office-ui-fabric-react/lib/Button";
+const overflowProps: IButtonProps = { ariaLabel: "More commands" };
 
 import "./../../../common/css/style.css";
 import "./../../../common/css/default.css";
 
 import {
   ClientsideWebpart,
-  ClientsidePageFromFile,
+  ClientsidePageFromFile
 } from "@pnp/sp/clientside-pages";
-import { IContextualMenuProps, IContextualMenuItem, ContextualMenuItemType } from "office-ui-fabric-react/lib/ContextualMenu";
+import {
+  IContextualMenuProps,
+  IContextualMenuItem,
+  ContextualMenuItemType
+} from "office-ui-fabric-react/lib/ContextualMenu";
 
 export interface IFirstWebpartState {
   selectedWebpart: string;
   subscribedWebpart: string[];
 }
-
-
 
 export default class FirstWebpart extends React.Component<
   IFirstWebpartProps,
@@ -39,7 +44,9 @@ export default class FirstWebpart extends React.Component<
   }
 
   private _getCurrentUserWebpartDetail() {
-    console.log("================== _getCurrentUserWebpartDetail =============================");
+    console.log(
+      "================== _getCurrentUserWebpartDetail ============================="
+    );
     sp.web.lists
       .getByTitle("EmployeeWebpartDetail")
       .items.select("*", "DashboardUser/EMail")
@@ -49,40 +56,67 @@ export default class FirstWebpart extends React.Component<
       )
       .getAll()
       .then(res => {
-        console.log("================_getCurrentUserWebpartDetail===============================");
+        console.log(
+          "================_getCurrentUserWebpartDetail==============================="
+        );
         console.log(res);
         this.setState({
           subscribedWebpart: res[0].OOTBWebpartName
         });
-        console.log("=====================_getCurrentUserWebpartDetail==========================");
+        this._displayWebpart();
+        console.log(
+          "=====================_getCurrentUserWebpartDetail=========================="
+        );
       });
   }
   componentDidMount() {
     this._getCurrentUserWebpartDetail();
-    this._displayWebpart();
   }
-
-
 
   public render(): React.ReactElement<IFirstWebpartProps> {
     //console.log("======================First============================");
 
     //console.log("======================Last============================");
-    let allWebParts = ["Task", "News", "Notification", "Report", "Chart"];
+    let allWebParts = ["Chart", "Report", "Task", "Notification", "News"];
+    let allWebPartsToBeDiplayed = allWebParts;
+
+    this.state.subscribedWebpart.forEach(webpartName => {
+      let mappedWebPartName = "";
+      switch (webpartName) {
+        case "Second Webpart":
+          mappedWebPartName = "Chart";
+          break;
+        case "Third Webpart":
+          mappedWebPartName = "Report";
+          break;
+        case "Fourth Webpart":
+          mappedWebPartName = "Task";
+          break;
+        case "Fifth Webpart":
+          mappedWebPartName = "Notification";
+          break;
+        case "Sixth Webpart":
+          mappedWebPartName = "News";
+          break;
+      }
+
+      let webpartIndex = allWebParts.indexOf(mappedWebPartName);
+      allWebPartsToBeDiplayed.splice(webpartIndex, 1);
+    });
 
     let commandBarItems = [];
-    allWebParts.forEach(element => {
-      let iconName = element
-      if(element == "Notification"){
-        iconName = "Ringer"
+    allWebPartsToBeDiplayed.forEach(element => {
+      let iconName = element;
+      if (element == "Notification") {
+        iconName = "Ringer";
       }
 
-      if(element == "Report"){
-        iconName = "ReportAdd"
+      if (element == "Report") {
+        iconName = "ReportAdd";
       }
 
-      if(element == "Task"){
-        iconName = "TaskLogo"
+      if (element == "Task") {
+        iconName = "TaskLogo";
       }
 
       commandBarItems.push({
@@ -90,11 +124,11 @@ export default class FirstWebpart extends React.Component<
         text: element,
         iconProps: { iconName: iconName },
         onClick: () => this.addWebpart(element)
-      })
+      });
     });
 
     commandBarItems.push({
-      key: 'divider_1',
+      key: "divider_1",
       itemType: ContextualMenuItemType.Divider
     });
 
@@ -107,10 +141,10 @@ export default class FirstWebpart extends React.Component<
 
     const _items: ICommandBarItemProps[] = [
       {
-        key: 'newItem',
-        text: 'Add Webpart',
-        cacheKey: 'myCacheKey', // changing this key will invalidate this item's cache
-        iconProps: { iconName: 'Add' },
+        key: "newItem",
+        text: "Add Webpart",
+        cacheKey: "myCacheKey", // changing this key will invalidate this item's cache
+        iconProps: { iconName: "Add" },
         subMenuProps: {
           items: commandBarItems
           //[
@@ -130,83 +164,86 @@ export default class FirstWebpart extends React.Component<
       }
     ];
 
-
-
     const _farItems: ICommandBarItemProps[] = [
       {
-        key: 'edit',
-        text: 'Edit',
+        key: "edit",
+        text: "Edit",
         // This needs an ariaLabel since it's icon-only
-        ariaLabel: 'Edit',
-        iconProps: { iconName: 'Edit' },
+        ariaLabel: "Edit",
+        iconProps: { iconName: "Edit" },
         onClick: () => enableDeleteButton()
       },
       {
-        key: 'save',
-        text: 'Save',
+        key: "save",
+        text: "Save",
         // This needs an ariaLabel since it's icon-only
-        ariaLabel: 'Save',
-        iconProps: { iconName: 'Save' },
-        style:{display:"flex"},
+        ariaLabel: "Save",
+        iconProps: { iconName: "Save" },
+        style: { display: "flex" },
         onClick: () => saveDashboard()
       }
     ];
 
-    function saveDashboard(){
+    function saveDashboard() {
       console.log(document.getElementsByTagName("i"));
       let allButtons = document.getElementsByTagName("i");
-      for(let i = 0; i < allButtons.length; i++){
+      for (let i = 0; i < allButtons.length; i++) {
         //let children = allButtons[i];
         //for(let j = 0; j < children.length; j++){
-          let currChildItem = allButtons[i].getAttribute("data-icon-name");
-          let currChildItemElement = allButtons[i] as HTMLElement;
-          if(currChildItem == "Edit"){
-            currChildItemElement.parentElement.parentElement.parentElement.style.display = "block";
-          }
+        let currChildItem = allButtons[i].getAttribute("data-icon-name");
+        let currChildItemElement = allButtons[i] as HTMLElement;
+        if (currChildItem == "Edit") {
+          currChildItemElement.parentElement.parentElement.parentElement.style.display =
+            "block";
+        }
 
-          if(currChildItem == "Save"){
-            currChildItemElement.parentElement.parentElement.parentElement.style.display = "none";
-          }
+        if (currChildItem == "Save") {
+          currChildItemElement.parentElement.parentElement.parentElement.style.display =
+            "none";
+        }
 
-          if(currChildItem == "Add"){
-            currChildItemElement.parentElement.parentElement.parentElement.style.display = "none";
-          }
+        if (currChildItem == "Add") {
+          currChildItemElement.parentElement.parentElement.parentElement.style.display =
+            "none";
+        }
 
-          if(currChildItem == "Delete"){
-            currChildItemElement.style.display = "none";
-          }
+        if (currChildItem == "Delete") {
+          currChildItemElement.style.display = "none";
+        }
         //}
       }
     }
 
-    function enableDeleteButton(){
+    function enableDeleteButton() {
       console.log(document.getElementsByTagName("i"));
       let allButtons = document.getElementsByTagName("i");
-      for(let i = 0; i < allButtons.length; i++){
+      for (let i = 0; i < allButtons.length; i++) {
         //let children = allButtons[i];
         //for(let j = 0; j < children.length; j++){
-          let currChildItem = allButtons[i].getAttribute("data-icon-name");
-          let currChildItemElement = allButtons[i] as HTMLElement;
-          if(currChildItem == "Delete"){
-            if(currChildItemElement.style.display == "block"){
-              currChildItemElement.style.display = "none";
-            }
-            else{
-              currChildItemElement.style.display = "block"
-            }
+        let currChildItem = allButtons[i].getAttribute("data-icon-name");
+        let currChildItemElement = allButtons[i] as HTMLElement;
+        if (currChildItem == "Delete") {
+          if (currChildItemElement.style.display == "block") {
+            currChildItemElement.style.display = "none";
+          } else {
+            currChildItemElement.style.display = "block";
           }
+        }
 
-          if(currChildItem == "Add"){
-            currChildItemElement.parentElement.parentElement.parentElement.style.display = "block";
-          }
+        if (currChildItem == "Add") {
+          currChildItemElement.parentElement.parentElement.parentElement.style.display =
+            "block";
+        }
 
-          if(currChildItem == "Edit"){
-            currChildItemElement.parentElement.parentElement.parentElement.style.display = "none";
-          }
+        if (currChildItem == "Edit") {
+          currChildItemElement.parentElement.parentElement.parentElement.style.display =
+            "none";
+        }
 
-          if(currChildItem == "Save"){
-            currChildItemElement.parentElement.parentElement.parentElement.style.display = "block";
-          }
+        if (currChildItem == "Save") {
+          currChildItemElement.parentElement.parentElement.parentElement.style.display =
+            "block";
+        }
         //}
       }
     }
@@ -286,7 +323,7 @@ export default class FirstWebpart extends React.Component<
     );
   }
 
-  private addWebpart(webpartName:string){
+  private addWebpart(webpartName: string) {
     alert(webpartName);
     this._AddWebpart(webpartName);
   }
@@ -319,22 +356,25 @@ export default class FirstWebpart extends React.Component<
       )
     );
 
-    page.sections[0].columns.length = 0;
     page.sections[1].columns.length = 0;
     page.sections[2].columns.length = 0;
+    page.sections[3].columns.length = 0;
 
     // create a new column layout
-    page.sections[0].addColumn(6);
-    page.sections[0].addColumn(6);
     page.sections[1].addColumn(6);
     page.sections[1].addColumn(6);
     page.sections[2].addColumn(6);
     page.sections[2].addColumn(6);
+    page.sections[3].addColumn(6);
+    page.sections[3].addColumn(6);
     // publish our changes
     await page.save();
 
     let part;
-    if(this.state.subscribedWebpart && this.state.subscribedWebpart.length > 0){
+    if (
+      this.state.subscribedWebpart &&
+      this.state.subscribedWebpart.length > 0
+    ) {
       this.state.subscribedWebpart.forEach(element => {
         const partDef = partDefs.filter(c => c.Name === element);
 
@@ -347,18 +387,18 @@ export default class FirstWebpart extends React.Component<
         // create a ClientWebPart instance from the definition
         part = ClientsideWebpart.fromComponentDef(partDef[0]);
 
-        if (element == "First Webpart") {
-          page.sections[0].columns[0].addControl(part);
-        } else if (element == "Second Webpart") {
-          page.sections[0].columns[1].addControl(part);
-        } else if (element == "Third Webpart") {
+        if (element == "Second Webpart") {
           page.sections[1].columns[0].addControl(part);
-        } else if (element == "Fourth Webpart") {
+        } else if (element == "Third Webpart") {
           page.sections[1].columns[1].addControl(part);
-        } else if (element == "Fifth Webpart") {
+        } else if (element == "Fourth Webpart") {
           page.sections[2].columns[0].addControl(part);
-        } else if (element == "Sixth Webpart") {
+        } else if (element == "Fifth Webpart") {
           page.sections[2].columns[1].addControl(part);
+        } else if (element == "Sixth Webpart") {
+          page.sections[3].columns[0].addControl(part);
+        } else if (element == "Seventh Webpart") {
+          page.sections[3].columns[1].addControl(part);
         }
       });
     }
@@ -438,27 +478,25 @@ export default class FirstWebpart extends React.Component<
     console.log(numberOfRows);
     console.log(numberOfControlsInRow);
 
-
     let webpartToBeAdded = "";
 
-    switch(webpartName){
+    switch (webpartName) {
+      case "Chart":
+        webpartToBeAdded = "Second Webpart";
+        break;
+      case "Report":
+        webpartToBeAdded = "Third Webpart";
+        break;
       case "Task":
         webpartToBeAdded = "Fourth Webpart";
         break;
       case "Notification":
         webpartToBeAdded = "Fifth Webpart";
         break;
-      case "Report":
-        webpartToBeAdded = "Third Webpart";
-        break;
-      case "Chart":
-        webpartToBeAdded = "Second Webpart";
-        break;
       case "News":
         webpartToBeAdded = "Sixth Webpart";
         break;
     }
-
 
     let part;
     //this.state.selectedWebpart.forEach(element => {
@@ -489,37 +527,53 @@ export default class FirstWebpart extends React.Component<
 
     //page.addSection().addControl(part);
 
-      for (let i = 0; i < numberOfControlsInRow.length; i++) {
-        if (numberOfControlsInRow[i] == 0) {
-          if (i == 0) {
-            page.sections[0].columns[0].addControl(part);
-            break;
-          } else if (i == 1) {
-            page.sections[0].columns[1].addControl(part);
-            break;
-          } else if (i == 2) {
-            page.sections[1].columns[0].addControl(part);
-            break;
-          } else if (i == 3) {
-            page.sections[1].columns[1].addControl(part);
-            break;
-          } else if (i == 4) {
-            page.sections[2].columns[0].addControl(part);
-            break;
-          } else if (i == 5) {
-            page.sections[2].columns[1].addControl(part);
-            break;
-          }
-        }
-      }
+    if (webpartToBeAdded == "Second Webpart") {
+      page.sections[1].columns[0].addControl(part);
+    } else if (webpartToBeAdded == "Third Webpart") {
+      page.sections[1].columns[1].addControl(part);
+    } else if (webpartToBeAdded == "Fourth Webpart") {
+      page.sections[2].columns[0].addControl(part);
+    } else if (webpartToBeAdded == "Fifth Webpart") {
+      page.sections[2].columns[1].addControl(part);
+    } else if (webpartToBeAdded == "Sixth Webpart") {
+      page.sections[3].columns[0].addControl(part);
+    } else if (webpartToBeAdded == "Seventh Webpart") {
+      page.sections[3].columns[1].addControl(part);
+    }
+
+    // for (let i = 0; i < numberOfControlsInRow.length; i++) {
+    //   if (numberOfControlsInRow[i] == 0) {
+    //     if (i == 0) {
+    //       page.sections[0].columns[0].addControl(part);
+    //       break;
+    //     } else if (i == 1) {
+    //       page.sections[0].columns[1].addControl(part);
+    //       break;
+    //     } else if (i == 2) {
+    //       page.sections[1].columns[0].addControl(part);
+    //       break;
+    //     } else if (i == 3) {
+    //       page.sections[1].columns[1].addControl(part);
+    //       break;
+    //     } else if (i == 4) {
+    //       page.sections[2].columns[0].addControl(part);
+    //       break;
+    //     } else if (i == 5) {
+    //       page.sections[2].columns[1].addControl(part);
+    //       break;
+    //     }
+    //   }
+    // }
     //});
 
     let webpartNeedToBeUpdated = this.state.subscribedWebpart;
 
-    if(webpartNeedToBeUpdated == null){
-      webpartNeedToBeUpdated = [webpartToBeAdded]
-    }
-    else if(webpartNeedToBeUpdated && this.state.subscribedWebpart.indexOf(webpartToBeAdded) < 0){
+    if (webpartNeedToBeUpdated == null) {
+      webpartNeedToBeUpdated = [webpartToBeAdded];
+    } else if (
+      webpartNeedToBeUpdated &&
+      this.state.subscribedWebpart.indexOf(webpartToBeAdded) < 0
+    ) {
       webpartNeedToBeUpdated.push(webpartToBeAdded);
     }
 

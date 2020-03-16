@@ -37,7 +37,7 @@ class Chart extends React.Component<IChartProps, {}> {
           <BarChart
             colorBars
             height={250}
-            width={550}
+            width={500}
             data={[
               {
                 x: "A",
@@ -53,7 +53,7 @@ class Chart extends React.Component<IChartProps, {}> {
               },
               {
                 x: "D",
-                y: 6
+                y: 65
               },
               {
                 x: "E",
@@ -81,7 +81,7 @@ class Chart extends React.Component<IChartProps, {}> {
               },
               {
                 x: "K",
-                y: 27
+                y: 70
               }
             ]}
             margin={{ top: 0, right: 0, bottom: 30, left: 100 }}

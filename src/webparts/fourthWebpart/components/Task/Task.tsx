@@ -33,7 +33,7 @@ class Task extends React.Component<ITaskProps, {}> {
             {/* <Icon iconName="Edit" style={{fontSize:"16px"}}></Icon> */}
             <Icon
               iconName="Delete"
-              style={{ fontSize: "16px", display:"none" }}
+              style={{ fontSize: "16px", display: "none" }}
               onClick={() => this.props.removeTile("Task")}
             ></Icon>
           </div>
@@ -44,14 +44,24 @@ class Task extends React.Component<ITaskProps, {}> {
           </span>
           <div className="message-center notifications">
             <a href="javascript:void(0)" className="message-item">
+              <span className="btn btn-success btn-circle">
+                <i className="ti-calendar"></i>
+              </span>
+              <span className="mail-contnet" style={{ color: "black" }}>
+                <h5 className="message-title">Personalize Home Page</h5>
+                <span className="mail-desc">
+                  Just a reminder that you have event
+                </span>
+                <span className="time">2:30 PM</span>
+              </span>
+            </a>
+            <a href="javascript:void(0)" className="message-item">
               <span className="btn btn-danger btn-circle">
                 <i className="fa fa-link"></i>
               </span>
               <span className="mail-contnet" style={{ color: "black" }}>
                 <h5 className="message-title">Luanch Admin</h5>
-                <span className="mail-desc">
-                  Just see the my new admin!
-                </span>
+                <span className="mail-desc">Just see the my new admin!</span>
                 <span className="time">9:30 AM</span>
               </span>
             </a>
