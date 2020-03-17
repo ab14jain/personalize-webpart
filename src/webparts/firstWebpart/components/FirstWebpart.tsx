@@ -71,6 +71,29 @@ export default class FirstWebpart extends React.Component<
   }
   componentDidMount() {
     this._getCurrentUserWebpartDetail();
+    let allButtons = document.getElementsByTagName("i");
+    for (let i = 0; i < allButtons.length; i++) {
+      let currChildItem = allButtons[i].getAttribute("data-icon-name");
+      let currChildItemElement = allButtons[i] as HTMLElement;
+      if (currChildItem == "Edit") {
+        currChildItemElement.parentElement.parentElement.parentElement.style.display =
+          "block";
+      }
+
+      if (currChildItem == "Save") {
+        currChildItemElement.parentElement.parentElement.parentElement.style.display =
+          "none";
+      }
+
+      if (currChildItem == "Add") {
+        currChildItemElement.parentElement.parentElement.parentElement.style.display =
+          "none";
+      }
+
+      if (currChildItem == "Delete") {
+        currChildItemElement.style.display = "none";
+      }
+    }
   }
 
   public render(): React.ReactElement<IFirstWebpartProps> {
